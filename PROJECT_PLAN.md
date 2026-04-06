@@ -50,14 +50,15 @@
 2. **JS 桥接**：提供全局函数 `root_cmd(mycmd)`。
 3. **ROOT 命令执行**：使用 `su -c` 执行 shell。
 4. **结果返回**：返回 `[stdout, stderr, statusCode]`。
-5. **Demo 验证**：页面自动/手动执行 `whoami` 并展示结果。
+5. **Demo 验证**：页面支持手动输入命令执行（默认可用 `whoami` 验证）并展示结果。
 
 ---
 
 ## 5. 核心流程
 APP 启动
 → WebView 加载本地网页
-→ JS 调用 `root_cmd("whoami")`
+→ 用户输入命令并触发执行
+→ JS 调用 `root_cmd(userInputCmd)`
 → 原生接收命令
 → ROOT 执行 shell
 → 收集输出
@@ -108,8 +109,8 @@ APP 启动
 
 ## 11. 开发优先级
 - **P0**：工程创建、API27 配置、32 位 ABI、WebView、JS 桥接、ROOT 执行、`whoami` Demo
-- **P1**：无
-- **P2**：界面、日志、结果美化
+- **P1**：稳定性增强（命令超时、异步执行、Root 预检查、统一错误码）
+- **P2**：体验优化（命令输入增强、命令日志、结果格式化）
 
 ---
 

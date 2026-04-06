@@ -8,16 +8,57 @@
     body { font-family: sans-serif; margin: 16px; background: #f6f7fb; color: #222; }
     h2 { margin-top: 0; }
     .card { background: #fff; border-radius: 10px; padding: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
-    button { background: #1565c0; color: #fff; border: 0; border-radius: 8px; padding: 10px 14px; cursor: pointer; }
-    pre { background: #111; color: #14ff85; padding: 12px; border-radius: 8px; white-space: pre-wrap; word-break: break-word; }
-    .hint { color: #666; font-size: 13px; }
+    .cmd-row { display: flex; gap: 10px; align-items: stretch; }
+    .cmd-input {
+      flex: 1;
+      min-height: 44px;
+      max-height: 120px;
+      resize: vertical;
+      border: 1px solid #d0d7e2;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 14px;
+      font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      background: #fff;
+      color: #222;
+      box-sizing: border-box;
+    }
+    button {
+      background: #1565c0;
+      color: #fff;
+      border: 0;
+      border-radius: 8px;
+      padding: 0 16px;
+      min-width: 90px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    pre {
+      margin-top: 12px;
+      background: #111;
+      color: #14ff85;
+      padding: 12px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      min-height: 110px;
+    }
+    .hint { color: #666; font-size: 13px; margin: 8px 0 10px; }
   </style>
 </head>
 <body>
   <h2>WebView ROOT 命令 Demo</h2>
   <div class="card">
-    <p class="hint">点击按钮调用 <code>root_cmd("whoami")</code>。</p>
-    <button onclick="runWhoami()">执行 whoami</button>
+    <div class="cmd-row">
+      <textarea
+        id="cmdInput"
+        class="cmd-input"
+        placeholder="输入命令，例如：whoami"
+        spellcheck="false"
+      >whoami</textarea>
+      <button id="runBtn" type="button">执行</button>
+    </div>
+    <p class="hint">按 Enter 执行，Shift + Enter 换行。</p>
     <pre id="result">等待执行...</pre>
   </div>
 
@@ -27,11 +68,20 @@
       return JSON.parse(raw);
     }
 
-    function runWhoami() {
+    function runCommand() {
       const resultEl = document.getElementById('result');
+      const inputEl = document.getElementById('cmdInput');
+      const cmd = inputEl.value.trim();
+
+      if (!cmd) {
+        resultEl.textContent = '请输入命令后再执行。';
+        return;
+      }
+
       try {
-        const [stdout, stderr, code] = root_cmd('whoami');
+        const [stdout, stderr, code] = root_cmd(cmd);
         resultEl.textContent =
+          'command: ' + cmd + '\n' +
           'stdout: ' + stdout + '\n' +
           'stderr: ' + stderr + '\n' +
           'statusCode: ' + code;
@@ -40,7 +90,18 @@
       }
     }
 
-    window.addEventListener('load', runWhoami);
+    window.addEventListener('load', function () {
+      const inputEl = document.getElementById('cmdInput');
+      const runBtn = document.getElementById('runBtn');
+
+      runBtn.addEventListener('click', runCommand);
+      inputEl.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          runCommand();
+        }
+      });
+    });
   </script>
 </body>
 </html>

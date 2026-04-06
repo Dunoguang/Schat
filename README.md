@@ -6,7 +6,7 @@ Android 8.1+（API 27）单机 WebView Demo：
 - JS 暴露全局函数 `root_cmd(mycmd)`
 - 原生使用 `su -c` 执行命令
 - 返回数组：`[stdout, stderr, statusCode]`
-- 默认 Demo 执行 `whoami`
+- 支持手动输入命令执行（默认命令 `whoami`）
 
 ## 关键文件
 - `app/src/main/java/com/example/rootwebviewdemo/MainActivity.java`
@@ -36,5 +36,10 @@ GitHub Actions（PR）构建成功后：
 - 需要 APK 文件时，请用：
   - `Build > Build Bundle(s) / APK(s) > Build APK(s)`
   - 完成后点击提示里的 `locate`
+
+## 页面交互
+- 输入命令后按 `Enter` 执行
+- `Shift + Enter` 可换行
+- 输入框右侧提供“执行”按钮
 
 > 说明：命令执行依赖设备 ROOT 授权；未 ROOT 设备会返回错误信息与非 0 状态码。
