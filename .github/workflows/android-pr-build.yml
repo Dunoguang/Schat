@@ -40,7 +40,7 @@ jobs:
             echo "ANDROID_SIGNING_KEY_ALIAS=$KEY_ALIAS" >> "$GITHUB_ENV"
             echo "ANDROID_SIGNING_KEY_PASSWORD=$KEY_PASSWORD" >> "$GITHUB_ENV"
           else
-            echo "Signing secrets not fully configured, building unsigned release APK."
+            echo "Signing secrets not fully configured, building debug-signed release APK."
           fi
 
       - name: Build release APK
@@ -49,10 +49,21 @@ jobs:
       - name: Show release APK directory
         run: ls -lah app/build/outputs/apk/release || true
 
+      - name: Resolve signed release APK
+        run: |
+          SIGNED_APK=$(find app/build/outputs/apk/release -maxdepth 1 -type f -name "*.apk" ! -name "*-unsigned.apk" | head -n 1)
+          if [ -z "$SIGNED_APK" ]; then
+            echo "No signed release APK found."
+            ls -lah app/build/outputs/apk/release || true
+            exit 1
+          fi
+          echo "SIGNED_APK_PATH=$SIGNED_APK" >> "$GITHUB_ENV"
+          echo "Using signed APK: $SIGNED_APK"
+
       - name: Upload release APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release-apk
-          path: app/build/outputs/apk/release/*.apk
+          path: ${{ env.SIGNED_APK_PATH }}
           if-no-files-found: error
           retention-days: 7

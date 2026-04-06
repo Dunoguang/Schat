@@ -19,44 +19,46 @@
       font-family: 'Segoe UI', 'Quicksand', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
       display: flex;
       justify-content: center;
-      position: relative;
       overflow-x: hidden;
-      padding: 14px;
-      padding-bottom: 180px;
+      padding: 10px;
     }
 
     .app-container {
       width: 100%;
-      max-width: 520px;
+      max-width: 500px;
       transition: all 0.2s ease;
+    }
+
+    .hidden {
+      display: none;
     }
 
     .loading-screen {
       background: rgba(255, 245, 240, 0.92);
       backdrop-filter: blur(2px);
-      border-radius: 64px;
-      padding: 2rem 1.5rem;
-      box-shadow: 0 20px 35px rgba(244, 143, 177, 0.25), 0 0 0 1px rgba(255, 220, 210, 0.6);
+      border-radius: 52px;
+      padding: 1.6rem 1.2rem;
+      box-shadow: 0 16px 30px rgba(244, 143, 177, 0.25), 0 0 0 1px rgba(255, 220, 210, 0.6);
       text-align: center;
       margin-top: 14vh;
     }
 
     .loading-text {
-      font-size: 1.9rem;
+      font-size: 1.45rem;
       font-weight: 600;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       background: linear-gradient(135deg, #e6718e, #c95c7a);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
-      margin-bottom: 28px;
+      margin-bottom: 18px;
       text-shadow: 0 1px 2px rgba(255, 200, 200, 0.6);
     }
 
     .spinner {
-      width: 70px;
-      height: 70px;
-      margin: 0 auto 20px;
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 14px;
       position: relative;
     }
 
@@ -65,8 +67,8 @@
       height: 100%;
       border-radius: 50%;
       background: conic-gradient(from 0deg, #ffb7c5, #ffd9c0, #ffb7c5);
-      mask: radial-gradient(farthest-side, transparent calc(100% - 12px), #000 calc(100% - 10px));
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 12px), #000 calc(100% - 10px));
+      mask: radial-gradient(farthest-side, transparent calc(100% - 10px), #000 calc(100% - 8px));
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 10px), #000 calc(100% - 8px));
       animation: spin 0.9s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
       box-shadow: 0 0 8px rgba(255, 150, 170, 0.5);
     }
@@ -77,65 +79,64 @@
     }
 
     .loading-sub {
-      font-size: 0.9rem;
+      font-size: 0.82rem;
       color: #e297ae;
       background: #fff0e8;
       display: inline-block;
-      padding: 5px 14px;
+      padding: 5px 12px;
       border-radius: 40px;
-      margin-top: 10px;
+      margin-top: 6px;
     }
 
     .main-card {
       background: #fffaf7;
-      border-radius: 48px 32px 56px 32px;
-      box-shadow: 0 25px 40px rgba(218, 128, 148, 0.25), 0 2px 6px rgba(243, 182, 186, 0.3);
+      border-radius: 36px 24px 42px 24px;
+      box-shadow: 0 18px 30px rgba(218, 128, 148, 0.22), 0 2px 6px rgba(243, 182, 186, 0.28);
       overflow: hidden;
       border: 1px solid #ffddcf;
     }
 
     .hero-section {
-      padding: 2rem 1.5rem 1.8rem;
+      padding: 1rem 0.95rem 0.9rem;
       text-align: center;
       background: linear-gradient(120deg, #ffeaeef5 0%, #ffe2e6 100%);
       border-bottom: 2px dashed #ffc1bc;
     }
 
     .yura-avatar {
-      font-size: 4.6rem;
-      filter: drop-shadow(0 10px 12px rgba(201, 112, 124, 0.3));
-      margin-bottom: 12px;
+      font-size: 3rem;
+      filter: drop-shadow(0 7px 10px rgba(201, 112, 124, 0.24));
+      margin-bottom: 6px;
     }
 
     .status-title {
-      font-size: 1.9rem;
+      font-size: 1.45rem;
       font-weight: 700;
       background: linear-gradient(125deg, #d46b8a, #b55373);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
 
     .sub-status {
       background: #ffe8e2;
-      padding: 8px 16px;
+      padding: 6px 12px;
       border-radius: 80px;
       display: inline-block;
-      font-size: 0.9rem;
-      font-weight: 500;
+      font-size: 0.78rem;
+      font-weight: 600;
       color: #c26582;
     }
 
     .detail-panel {
-      padding: 24px 22px 24px;
+      padding: 12px 12px 14px;
     }
 
     .cmd-area {
       background: #fff3ef;
-      border-radius: 28px;
-      padding: 14px 18px;
-      margin-bottom: 16px;
+      border-radius: 22px;
+      padding: 10px 10px 12px;
       border: 1px solid #ffdad2;
       box-shadow: inset 0 1px 3px #fbc2bf30, 0 2px 5px rgba(0,0,0,0.02);
     }
@@ -150,27 +151,71 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      padding: 0 4px;
     }
 
-    pre {
+    .terminal-shell {
       background: #2e2227;
       color: #ffcfaf;
-      font-family: 'JetBrains Mono', monospace;
-      padding: 14px;
       border-radius: 20px;
-      font-size: 0.8rem;
+      border-left: 6px solid #ffa1b5;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 10px;
+      min-height: 50vh;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .terminal-output {
+      flex: 1;
+      overflow-y: auto;
       white-space: pre-wrap;
       word-break: break-word;
-      border-left: 6px solid #ffa1b5;
-      margin-top: 5px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      overflow-y: auto;
-      min-height: 180px;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 0.84rem;
+      line-height: 1.35;
+      padding: 2px;
+    }
+
+    .terminal-line {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 0.84rem;
+      line-height: 1.35;
+      border-top: 1px solid rgba(255, 172, 192, 0.2);
+      padding-top: 8px;
+      min-height: 24px;
+    }
+
+    .prompt-mark {
+      color: #ffd8e2;
+      font-weight: 700;
+      min-width: 12px;
+      text-align: center;
+      margin-top: 1px;
+    }
+
+    .cmd-inline {
+      flex: 1;
+      outline: none;
+      color: #fff0c9;
+      min-height: 20px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      user-select: text;
+    }
+
+    .cmd-inline:empty::before {
+      content: attr(data-placeholder);
+      color: #ac8e96;
     }
 
     .button-group {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       justify-content: center;
       margin-top: 10px;
       flex-wrap: wrap;
@@ -179,17 +224,17 @@
     .pink-btn {
       background: #f49dbb;
       border: none;
-      padding: 12px 22px;
+      padding: 10px 16px;
       border-radius: 100px;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: #2f1d24;
-      box-shadow: 0 6px 0 #aa6f84;
+      box-shadow: 0 5px 0 #aa6f84;
       cursor: pointer;
       font-family: inherit;
-      letter-spacing: 0.5px;
-      min-width: 84px;
-      flex: 1 1 96px;
+      letter-spacing: 0.4px;
+      min-width: 78px;
+      flex: 1 1 90px;
       touch-action: manipulation;
     }
 
@@ -201,20 +246,21 @@
     .beige-btn {
       background: #ffddcf;
       border: 1px solid #ffbfae;
-      padding: 12px 16px;
+      padding: 10px 12px;
       border-radius: 100px;
       font-weight: 600;
       color: #b34b6b;
       cursor: pointer;
-      min-width: 82px;
-      flex: 1 1 82px;
+      min-width: 76px;
+      flex: 1 1 76px;
       touch-action: manipulation;
-      box-shadow: 0 5px 0 #d9a593;
+      box-shadow: 0 4px 0 #d9a593;
+      font-size: 0.88rem;
     }
 
     .beige-btn:active {
       transform: translateY(2px);
-      box-shadow: 0 3px 0 #d9a593;
+      box-shadow: 0 2px 0 #d9a593;
       background: #ffcfbd;
     }
 
@@ -226,87 +272,33 @@
       cursor: not-allowed;
     }
 
-    .footer-note {
-      text-align: center;
-      margin-top: 16px;
-      font-size: 0.7rem;
-      color: #d494aa;
-    }
-
-    .command-dock {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 80;
-      background: rgba(255, 245, 240, 0.95);
-      backdrop-filter: blur(10px);
-      border-top: 1px solid #ffcfd3;
-      box-shadow: 0 -8px 20px rgba(170, 111, 132, 0.2);
-      padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
-    }
-
-    .dock-inner {
-      width: 100%;
-      max-width: 520px;
-      margin: 0 auto;
-    }
-
-    .input-wrap {
-      margin-bottom: 8px;
-    }
-
-    .cmd-input {
-      width: 100%;
-      min-height: 42px;
-      max-height: 90px;
-      resize: vertical;
-      border: 1px solid #ffb9c6;
-      border-radius: 16px;
-      padding: 10px 12px;
-      font-size: 14px;
-      font-family: 'JetBrains Mono', monospace;
-      color: #402934;
-      background: #fffdfd;
-    }
-
-    .cmd-input:focus {
-      outline: none;
-      border-color: #f19ab9;
-      box-shadow: 0 0 0 2px #ffd6e3;
-    }
-
     .dock-hint {
       margin-top: 7px;
       text-align: center;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: #bf7493;
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 0.68rem;
+      color: #d494aa;
     }
 
     @media (max-width: 420px) {
       body {
-        padding: 10px;
-        padding-bottom: 190px;
-      }
-      .detail-panel {
-        padding: 18px 14px 18px;
-      }
-      .hero-section {
-        padding: 1.5rem 1.1rem 1.3rem;
+        padding: 8px;
       }
       .status-title {
-        font-size: 1.55rem;
+        font-size: 1.3rem;
       }
       .yura-avatar {
-        font-size: 3.9rem;
+        font-size: 2.65rem;
       }
-      .loading-text {
-        font-size: 1.45rem;
+      .terminal-shell {
+        min-height: 52vh;
       }
-    }
-
-    .hidden {
-      display: none;
     }
   </style>
 </head>
@@ -330,30 +322,36 @@
       <div class="detail-panel">
         <div class="cmd-area">
           <div class="cmd-label">
-            <span>💻 ROOT 探测回显</span> <span style="font-size:12px;">⚡</span>
+            <span>💻 终端</span> <span style="font-size:12px;">⚡</span>
           </div>
-          <pre id="rootResultBlock">尚未执行命令</pre>
+
+          <div class="terminal-shell" id="terminalShell">
+            <pre id="rootResultBlock" class="terminal-output">尚未执行命令</pre>
+            <div class="terminal-line" id="commandLine">
+              <span id="promptMark" class="prompt-mark">$</span>
+              <span
+                id="cmdInline"
+                class="cmd-inline"
+                contenteditable="true"
+                data-placeholder="点击这里输入命令，例如 whoami"
+              ></span>
+            </div>
+          </div>
         </div>
+
+        <div class="button-group">
+          <button class="beige-btn" id="historyUpBtn">⬆ 上一条</button>
+          <button class="beige-btn" id="historyDownBtn">⬇ 下一条</button>
+          <button class="pink-btn" id="runBtn">🖤 执行命令 🖤</button>
+          <button class="beige-btn" id="clearBtn">🍬 清除输出</button>
+        </div>
+        <div class="dock-hint">Enter 执行，Shift+Enter 换行，箭头可切换命令历史</div>
+
         <div class="footer-note">
           💕 粉肤结界 · 由良酱的契约 💕
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-<div class="command-dock" id="commandDock">
-  <div class="dock-inner">
-    <div class="input-wrap">
-      <textarea id="cmdInput" class="cmd-input" placeholder="输入命令，例如：whoami" spellcheck="false">whoami</textarea>
-    </div>
-    <div class="button-group">
-      <button class="beige-btn" id="historyUpBtn">⬆ 上一条</button>
-      <button class="beige-btn" id="historyDownBtn">⬇ 下一条</button>
-      <button class="pink-btn" id="runBtn">🖤 执行命令 🖤</button>
-      <button class="beige-btn" id="clearBtn">🍬 清除输出</button>
-    </div>
-    <div class="dock-hint">Enter 执行，Shift+Enter 换行，箭头可切换命令历史</div>
   </div>
 </div>
 
@@ -368,6 +366,9 @@
   const mainStatusTitle = document.getElementById('mainStatusTitle');
   const subStatusText = document.getElementById('subStatusText');
   const rootResultBlock = document.getElementById('rootResultBlock');
+  const promptMark = document.getElementById('promptMark');
+  const cmdInline = document.getElementById('cmdInline');
+  const terminalShell = document.getElementById('terminalShell');
 
   let commandHistory = [];
   let historyIndex = null;
@@ -389,6 +390,10 @@
     }
   }
 
+  function updatePrompt() {
+    promptMark.textContent = currentRootSuccess ? '#' : '$';
+  }
+
   function detectRootStatus() {
     try {
       const result = root_cmd('whoami');
@@ -399,10 +404,30 @@
       currentRootSuccess = false;
     }
     updateMainUI();
+    updatePrompt();
   }
 
   function getPromptByStatus() {
     return currentRootSuccess ? '#' : '$';
+  }
+
+  function getCurrentInputText() {
+    return cmdInline.innerText.replace(/\r/g, '').replace(/\n+/g, '\n').trim();
+  }
+
+  function setCurrentInputText(text) {
+    cmdInline.innerText = text || '';
+    placeCaretAtEnd(cmdInline);
+  }
+
+  function placeCaretAtEnd(el) {
+    el.focus();
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
   }
 
   function saveCommandHistory() {
@@ -437,11 +462,10 @@
   }
 
   function moveHistory(step) {
-    const inputEl = document.getElementById('cmdInput');
     if (commandHistory.length === 0) return;
 
     if (historyIndex === null) {
-      draftBeforeHistory = inputEl.value;
+      draftBeforeHistory = getCurrentInputText();
       historyIndex = commandHistory.length;
     }
 
@@ -450,14 +474,11 @@
 
     historyIndex = nextIndex;
     if (historyIndex === commandHistory.length) {
-      inputEl.value = draftBeforeHistory;
+      setCurrentInputText(draftBeforeHistory);
       historyIndex = null;
     } else {
-      inputEl.value = commandHistory[historyIndex];
+      setCurrentInputText(commandHistory[historyIndex]);
     }
-
-    inputEl.focus();
-    inputEl.setSelectionRange(inputEl.value.length, inputEl.value.length);
   }
 
   function formatExecutionOutput(stdout, stderr) {
@@ -508,23 +529,8 @@
     }
   }
 
-  function updateOutputHeight() {
-    const dock = document.getElementById('commandDock');
-    if (!dock || !rootResultBlock) return;
-
-    const top = rootResultBlock.getBoundingClientRect().top;
-    const dockTop = dock.getBoundingClientRect().top;
-    const available = Math.floor(dockTop - top - 18);
-
-    const minHeight = 170;
-    const maxHeight = 560;
-    const finalHeight = Math.max(minHeight, Math.min(maxHeight, available));
-    rootResultBlock.style.height = finalHeight + 'px';
-  }
-
   function runCommand() {
-    const inputEl = document.getElementById('cmdInput');
-    const cmd = inputEl.value.trim();
+    const cmd = getCurrentInputText();
     if (!cmd) return;
 
     try {
@@ -539,36 +545,46 @@
         updateMainUI();
       }
 
+      updatePrompt();
       const prompt = getPromptByStatus();
       const outputText = formatExecutionOutput(stdout, stderr);
       appendOutput(prompt + ' ' + cmd + (outputText ? '\n' + outputText : ''));
       rememberCommand(cmd);
-      inputEl.value = '';
+      setCurrentInputText('');
     } catch (err) {
+      updatePrompt();
       const prompt = getPromptByStatus();
       appendOutput(prompt + ' ' + cmd + '\n' + String(err));
       rememberCommand(cmd);
-      inputEl.value = '';
+      setCurrentInputText('');
     }
   }
 
   function bindEvents() {
-    const inputEl = document.getElementById('cmdInput');
     const upBtn = document.getElementById('historyUpBtn');
     const downBtn = document.getElementById('historyDownBtn');
     const runBtn = document.getElementById('runBtn');
     const clearBtn = document.getElementById('clearBtn');
+    const commandLine = document.getElementById('commandLine');
 
     upBtn.addEventListener('click', function() { moveHistory(-1); });
     downBtn.addEventListener('click', function() { moveHistory(1); });
     runBtn.addEventListener('click', runCommand);
     clearBtn.addEventListener('click', clearOutput);
 
-    inputEl.addEventListener('input', function() {
+    terminalShell.addEventListener('click', function() {
+      placeCaretAtEnd(cmdInline);
+    });
+
+    commandLine.addEventListener('click', function() {
+      placeCaretAtEnd(cmdInline);
+    });
+
+    cmdInline.addEventListener('input', function() {
       if (historyIndex !== null) historyIndex = null;
     });
 
-    inputEl.addEventListener('keydown', function(event) {
+    cmdInline.addEventListener('keydown', function(event) {
       if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
         runCommand();
@@ -585,12 +601,11 @@
       detectRootStatus();
       loadingScreen.classList.add('hidden');
       mainInterface.classList.remove('hidden');
-      updateOutputHeight();
+      placeCaretAtEnd(cmdInline);
     }, 1000);
   }
 
   window.addEventListener('load', startApp);
-  window.addEventListener('resize', updateOutputHeight);
 </script>
 </body>
 </html>
