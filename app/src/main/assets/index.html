@@ -171,6 +171,21 @@
       saveOutputHistory(next);
     }
 
+    function formatExecutionOutput(stdout, stderr) {
+      const out = (stdout || '').trim();
+      const err = (stderr || '').trim();
+      if (out && err) {
+        return out + '\n' + err;
+      }
+      if (out) {
+        return out;
+      }
+      if (err) {
+        return err;
+      }
+      return '';
+    }
+
     function rememberCommand(cmd) {
       if (!cmd) {
         return;
@@ -238,19 +253,13 @@
       }
 
       try {
-        const [stdout, stderr, code] = root_cmd(cmd);
-        const timestamp = new Date().toLocaleString();
-        appendOutput(
-          '[' + timestamp + ']\n' +
-          'command: ' + cmd + '\n' +
-          'stdout: ' + stdout + '\n' +
-          'stderr: ' + stderr + '\n' +
-          'statusCode: ' + code
-        );
+        const [stdout, stderr] = root_cmd(cmd);
+        const outputText = formatExecutionOutput(stdout, stderr);
+        appendOutput(outputText);
         rememberCommand(cmd);
         inputEl.value = '';
       } catch (err) {
-        appendOutput('command: ' + cmd + '\n调用失败: ' + err);
+        appendOutput(String(err));
         rememberCommand(cmd);
         inputEl.value = '';
       }
