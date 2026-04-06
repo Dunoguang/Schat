@@ -109,7 +109,7 @@
     }
 
     .hero-section {
-      height: min(20vh, 130px);
+      height: min(18vh, 108px);
       padding: 0.55rem 0.85rem 0.5rem;
       display: flex;
       flex-direction: column;
@@ -121,14 +121,14 @@
     }
 
     .yura-avatar {
-      font-size: 2.45rem;
+      font-size: 2.15rem;
       filter: drop-shadow(0 7px 10px rgba(201, 112, 124, 0.24));
       margin-bottom: 4px;
       line-height: 1;
     }
 
     .status-title {
-      font-size: clamp(1rem, 6vw, 1.3rem);
+      font-size: clamp(0.9rem, 5.2vw, 1.14rem);
       font-weight: 700;
       background: linear-gradient(125deg, #d46b8a, #b55373);
       background-clip: text;
@@ -155,7 +155,7 @@
     }
 
     .detail-panel {
-      padding: 12px 12px 14px;
+      padding: 10px 10px 12px;
       display: flex;
       flex-direction: column;
       min-height: 0;
@@ -194,7 +194,7 @@
       border-left: 6px solid #ffa1b5;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       padding: 10px;
-      min-height: 50vh;
+      min-height: 0;
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -206,6 +206,8 @@
       flex: 1;
       overflow-y: auto;
       overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
       white-space: pre-wrap;
       word-break: break-word;
       font-family: 'JetBrains Mono', Consolas, monospace;
@@ -213,6 +215,8 @@
       line-height: 1.35;
       padding: 2px;
       min-height: 0;
+      user-select: text;
+      -webkit-user-select: text;
     }
 
     .terminal-line {
@@ -250,23 +254,23 @@
       gap: 8px;
       justify-content: center;
       margin-top: 10px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
     }
 
     .pink-btn {
       background: #f49dbb;
       border: none;
-      padding: 10px 16px;
+      padding: 9px 6px;
       border-radius: 100px;
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.74rem;
       color: #2f1d24;
       box-shadow: 0 5px 0 #aa6f84;
       cursor: pointer;
       font-family: inherit;
       letter-spacing: 0.4px;
-      min-width: 78px;
-      flex: 1 1 90px;
+      min-width: 0;
+      flex: 1 1 0;
       touch-action: manipulation;
       white-space: nowrap;
     }
@@ -279,17 +283,19 @@
     .beige-btn {
       background: #ffddcf;
       border: 1px solid #ffbfae;
-      padding: 10px 12px;
+      padding: 9px 6px;
       border-radius: 100px;
       font-weight: 600;
       color: #b34b6b;
       cursor: pointer;
-      min-width: 76px;
-      flex: 1 1 76px;
+      min-width: 0;
+      flex: 1 1 0;
       touch-action: manipulation;
       box-shadow: 0 4px 0 #d9a593;
-      font-size: 0.88rem;
+      font-size: 0.72rem;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .beige-btn:active {
@@ -304,6 +310,12 @@
       box-shadow: none;
       transform: none;
       cursor: not-allowed;
+    }
+
+    .pink-btn {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .dock-hint {
@@ -325,13 +337,10 @@
         padding: 8px;
       }
       .status-title {
-        font-size: clamp(0.95rem, 5.2vw, 1.15rem);
+        font-size: clamp(0.84rem, 4.8vw, 1rem);
       }
       .yura-avatar {
-        font-size: 2.1rem;
-      }
-      .terminal-shell {
-        min-height: 52vh;
+        font-size: 1.88rem;
       }
       .sub-status {
         font-size: 0.68rem;
@@ -354,7 +363,6 @@
       <div class="hero-section">
         <div class="yura-avatar">🐾🌸 由良酱 🌸🐾</div>
         <div class="status-title" id="mainStatusTitle">由良酱已无力反抗</div>
-        <div class="sub-status" id="subStatusText">💗 软乎乎地被驯服 💗</div>
       </div>
       <div class="detail-panel">
         <div class="cmd-area">
@@ -400,7 +408,6 @@
   const loadingScreen = document.getElementById('loadingScreen');
   const mainInterface = document.getElementById('mainInterface');
   const mainStatusTitle = document.getElementById('mainStatusTitle');
-  const subStatusText = document.getElementById('subStatusText');
   const rootResultBlock = document.getElementById('rootResultBlock');
   const promptMark = document.getElementById('promptMark');
   const cmdInline = document.getElementById('cmdInline');
@@ -419,10 +426,8 @@
   function updateMainUI() {
     if (currentRootSuccess) {
       mainStatusTitle.textContent = '由良酱已无力反抗';
-      subStatusText.textContent = '💘 瘫软在掌心 任你摆布 💘';
     } else {
       mainStatusTitle.textContent = '由良酱开启龙脊背模式';
-      subStatusText.textContent = '🐉 炸毛哈气 超凶的！ 🐉';
     }
     fitMainTitleOneLine();
   }
@@ -478,6 +483,23 @@
 
   function setCurrentInputText(text) {
     cmdInline.innerText = text || '';
+  }
+
+  function updateTerminalBoxSize() {
+    if (mainInterface.classList.contains('hidden')) return;
+
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const targetOutputHeight = Math.floor(viewportHeight * 0.5);
+    const commandLine = document.getElementById('commandLine');
+    const shellRect = terminalShell.getBoundingClientRect();
+    const lineHeight = commandLine ? commandLine.offsetHeight : 28;
+    const shellComputed = getComputedStyle(terminalShell);
+    const padTop = parseFloat(shellComputed.paddingTop || '0');
+    const padBottom = parseFloat(shellComputed.paddingBottom || '0');
+    const available = Math.floor(shellRect.height - lineHeight - padTop - padBottom - 8);
+    const safeAvailable = Math.max(80, available);
+    const finalHeight = Math.min(targetOutputHeight, safeAvailable);
+    rootResultBlock.style.height = finalHeight + 'px';
   }
 
   function placeCaretAtEnd(el) {
@@ -632,10 +654,6 @@
     runBtn.addEventListener('click', runCommand);
     clearBtn.addEventListener('click', clearOutput);
 
-    terminalShell.addEventListener('click', function() {
-      placeCaretAtEnd(cmdInline);
-    });
-
     commandLine.addEventListener('click', function() {
       placeCaretAtEnd(cmdInline);
     });
@@ -663,6 +681,7 @@
       mainInterface.classList.remove('hidden');
       placeCaretAtEnd(cmdInline);
       fitMainTitleOneLine();
+      updateTerminalBoxSize();
     }, 1000);
   }
 
@@ -671,7 +690,10 @@
   }
 
   window.addEventListener('load', startApp);
-  window.addEventListener('resize', fitMainTitleOneLine);
+  window.addEventListener('resize', function() {
+    fitMainTitleOneLine();
+    updateTerminalBoxSize();
+  });
   window.addEventListener('beforeunload', clearCommandLineOnExit);
   window.addEventListener('pagehide', clearCommandLineOnExit);
   document.addEventListener('visibilitychange', function() {
