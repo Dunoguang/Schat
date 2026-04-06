@@ -3,52 +3,107 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Root Cmd Demo</title>
+  <title>Web shell</title>
   <style>
-    body { font-family: sans-serif; margin: 16px; background: #f6f7fb; color: #222; }
-    h2 { margin-top: 0; }
-    .card { background: #fff; border-radius: 10px; padding: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
-    .cmd-row { display: flex; gap: 10px; align-items: stretch; }
+    * { -webkit-tap-highlight-color: transparent; }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #f6f7fb;
+      color: #222;
+    }
+    .page {
+      padding: 14px;
+      padding-bottom: 150px;
+      box-sizing: border-box;
+      min-height: 100vh;
+    }
+    h2 { margin: 0 0 10px; }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
     .cmd-input {
       flex: 1;
-      min-height: 44px;
-      max-height: 120px;
+      min-height: 42px;
+      max-height: 70px;
       resize: vertical;
       border: 1px solid #d0d7e2;
       border-radius: 8px;
-      padding: 10px;
+      padding: 9px;
       font-size: 14px;
       font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
       background: #fff;
       color: #222;
       box-sizing: border-box;
     }
+    .cmd-input:focus { outline: none; border-color: #8ca3c6; }
+    .bottom-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 30;
+      background: #ffffff;
+      border-top: 1px solid #d8deea;
+      box-shadow: 0 -4px 12px rgba(0,0,0,.05);
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+      box-sizing: border-box;
+    }
+    .cmd-row {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
     button {
       background: #1565c0;
       color: #fff;
       border: 0;
       border-radius: 8px;
-      padding: 0 16px;
-      min-width: 90px;
+      padding: 0 12px;
+      min-width: 56px;
       cursor: pointer;
       font-size: 14px;
+      -webkit-appearance: none;
+      appearance: none;
+      touch-action: manipulation;
+    }
+    button:focus { outline: none; }
+    .history-btn { min-width: 42px; font-size: 18px; line-height: 1; }
+    .clear-btn { background: #7a869a; min-width: 58px; }
+    .run-btn { min-width: 62px; }
+    button:disabled {
+      background: #c4cedf;
+      color: #f4f7fb;
+      cursor: not-allowed;
     }
     pre {
-      margin-top: 12px;
+      margin-top: 10px;
       background: #111;
       color: #14ff85;
       padding: 12px;
       border-radius: 8px;
       white-space: pre-wrap;
       word-break: break-word;
-      min-height: 110px;
+      height: 280px;
+      overflow-y: auto;
+      box-sizing: border-box;
     }
     .hint { color: #666; font-size: 13px; margin: 8px 0 10px; }
   </style>
 </head>
 <body>
-  <h2>WebView ROOT 命令 Demo</h2>
-  <div class="card">
+  <div class="page">
+    <h2>Web shell</h2>
+    <div class="card">
+      <p class="hint">输出窗口固定高度，可在窗口内滑动查看历史执行内容。</p>
+      <pre id="result">等待执行...</pre>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
     <div class="cmd-row">
       <textarea
         id="cmdInput"
@@ -56,16 +111,120 @@
         placeholder="输入命令，例如：whoami"
         spellcheck="false"
       >whoami</textarea>
-      <button id="runBtn" type="button">执行</button>
+      <button id="historyUpBtn" class="history-btn" type="button" aria-label="上一条历史命令">↑</button>
+      <button id="historyDownBtn" class="history-btn" type="button" aria-label="下一条历史命令">↓</button>
+      <button id="runBtn" class="run-btn" type="button">执行</button>
+      <button id="clearBtn" class="clear-btn" type="button">清除</button>
     </div>
-    <p class="hint">按 Enter 执行，Shift + Enter 换行。</p>
-    <pre id="result">等待执行...</pre>
+    <p class="hint">Enter 执行，Shift+Enter 换行。↑/↓ 按钮切换历史命令。</p>
   </div>
 
   <script>
+    const COMMAND_HISTORY_KEY = 'webshell_command_history_v1';
+    const OUTPUT_HISTORY_KEY = 'webshell_output_history_v1';
+    const MAX_COMMAND_HISTORY = 100;
+
+    let commandHistory = [];
+    let historyIndex = null;
+    let draftBeforeHistory = '';
+
     function root_cmd(mycmd) {
       const raw = NativeBridge.root_cmd(mycmd);
       return JSON.parse(raw);
+    }
+
+    function loadState() {
+      try {
+        const historyRaw = localStorage.getItem(COMMAND_HISTORY_KEY);
+        if (historyRaw) {
+          const parsed = JSON.parse(historyRaw);
+          if (Array.isArray(parsed)) {
+            commandHistory = parsed.filter(function (item) {
+              return typeof item === 'string' && item.trim() !== '';
+            });
+          }
+        }
+      } catch (e) {}
+
+      try {
+        const outputRaw = localStorage.getItem(OUTPUT_HISTORY_KEY);
+        if (outputRaw && outputRaw.trim() !== '') {
+          document.getElementById('result').textContent = outputRaw;
+        }
+      } catch (e) {}
+    }
+
+    function saveCommandHistory() {
+      localStorage.setItem(COMMAND_HISTORY_KEY, JSON.stringify(commandHistory));
+    }
+
+    function saveOutputHistory(text) {
+      localStorage.setItem(OUTPUT_HISTORY_KEY, text);
+    }
+
+    function appendOutput(block) {
+      const resultEl = document.getElementById('result');
+      const current = resultEl.textContent === '等待执行...' ? '' : resultEl.textContent;
+      const next = (current ? current + '\n\n' : '') + block;
+      resultEl.textContent = next;
+      resultEl.scrollTop = resultEl.scrollHeight;
+      saveOutputHistory(next);
+    }
+
+    function rememberCommand(cmd) {
+      if (!cmd) {
+        return;
+      }
+      const last = commandHistory.length > 0 ? commandHistory[commandHistory.length - 1] : '';
+      if (cmd !== last) {
+        commandHistory.push(cmd);
+        if (commandHistory.length > MAX_COMMAND_HISTORY) {
+          commandHistory = commandHistory.slice(commandHistory.length - MAX_COMMAND_HISTORY);
+        }
+        saveCommandHistory();
+      }
+      historyIndex = null;
+      draftBeforeHistory = '';
+      updateHistoryButtons();
+    }
+
+    function updateHistoryButtons() {
+      const hasHistory = commandHistory.length > 0;
+      document.getElementById('historyUpBtn').disabled = !hasHistory;
+      document.getElementById('historyDownBtn').disabled = !hasHistory;
+    }
+
+    function moveHistory(step) {
+      const inputEl = document.getElementById('cmdInput');
+      if (commandHistory.length === 0) {
+        return;
+      }
+
+      if (historyIndex === null) {
+        draftBeforeHistory = inputEl.value;
+        historyIndex = commandHistory.length;
+      }
+
+      const nextIndex = historyIndex + step;
+      if (nextIndex < 0 || nextIndex > commandHistory.length) {
+        return;
+      }
+
+      historyIndex = nextIndex;
+      if (historyIndex === commandHistory.length) {
+        inputEl.value = draftBeforeHistory;
+        historyIndex = null;
+      } else {
+        inputEl.value = commandHistory[historyIndex];
+      }
+      inputEl.focus();
+      inputEl.setSelectionRange(inputEl.value.length, inputEl.value.length);
+    }
+
+    function clearOutput() {
+      const resultEl = document.getElementById('result');
+      resultEl.textContent = '';
+      saveOutputHistory('');
     }
 
     function runCommand() {
@@ -80,27 +239,50 @@
 
       try {
         const [stdout, stderr, code] = root_cmd(cmd);
-        resultEl.textContent =
+        const timestamp = new Date().toLocaleString();
+        appendOutput(
+          '[' + timestamp + ']\n' +
           'command: ' + cmd + '\n' +
           'stdout: ' + stdout + '\n' +
           'stderr: ' + stderr + '\n' +
-          'statusCode: ' + code;
+          'statusCode: ' + code
+        );
+        rememberCommand(cmd);
+        inputEl.value = '';
       } catch (err) {
-        resultEl.textContent = '调用失败: ' + err;
+        appendOutput('command: ' + cmd + '\n调用失败: ' + err);
+        rememberCommand(cmd);
+        inputEl.value = '';
       }
     }
 
     window.addEventListener('load', function () {
+      loadState();
       const inputEl = document.getElementById('cmdInput');
+      const upBtn = document.getElementById('historyUpBtn');
+      const downBtn = document.getElementById('historyDownBtn');
       const runBtn = document.getElementById('runBtn');
+      const clearBtn = document.getElementById('clearBtn');
 
+      upBtn.addEventListener('click', function () { moveHistory(-1); });
+      downBtn.addEventListener('click', function () { moveHistory(1); });
       runBtn.addEventListener('click', runCommand);
+      clearBtn.addEventListener('click', clearOutput);
+
+      inputEl.addEventListener('input', function () {
+        if (historyIndex !== null) {
+          historyIndex = null;
+        }
+      });
+
       inputEl.addEventListener('keydown', function (event) {
         if (event.key === 'Enter' && !event.shiftKey) {
           event.preventDefault();
           runCommand();
         }
       });
+
+      updateHistoryButtons();
     });
   </script>
 </body>

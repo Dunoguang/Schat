@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.in_app_title);
         setContentView(R.layout.activity_main);
 
         webView = findViewById(R.id.webView);
