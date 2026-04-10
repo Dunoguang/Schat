@@ -55,8 +55,8 @@ public class FloatingOverlayService extends Service {
         minPanelWidth = dp(280);
         minPanelHeight = dp(320);
         startAsForegroundService();
-        createFloatingBall();
         createWebPanel();
+        createFloatingBall();
     }
 
     @Override
