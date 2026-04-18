@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Schat - 聊天应用</title>
+    <link rel="stylesheet" href="uni.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <div class="logo">Schat</div>
+            <div class="user-info" id="userNowBtn">点击获取用户</div>
+        </div>
+        <div class="chat-list" id="chatList">
+            <div class="loading-state"><div class="loading-spinner"></div><div>加载中...</div></div>
+        </div>
+        <div class="footer">
+            <button class="btn btn-danger" id="exitBtn">退出登录</button>
+            <button class="btn btn-success" id="registerBtn">注册账号</button>
+        </div>
+        <div class="fab-add" id="addChatBtn">+</div>
+    </div>
+    <script src="core.js"></script>
+    <script>
+        initIndexPage();
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>聊天 - Schat</title>
+    <link rel="stylesheet" href="uni.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="back-btn" id="backBtn">←</div>
+            <div class="chat-title" id="chatTitle">加载中...</div>
+            <div class="action-btn" id="refreshBtn">🔄</div>
+        </div>
+
+        <div class="messages-container" id="messagesContainer">
+            <div class="loading-state"><div class="loading-spinner"></div><div>加载消息中...</div></div>
+        </div>
+
+        <div class="input-area">
+            <div class="input-wrapper">
+                <input type="text" class="msg-input" id="msgInput" placeholder="输入消息...">
+            </div>
+            <button class="send-btn" id="sendBtn">发送</button>
+        </div>
+    </div>
+    <script src="core.js"></script>
+    <script>
+        initChatPage();
+    </script>
+</body>
+</html>

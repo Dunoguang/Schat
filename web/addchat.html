@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>添加对话 - Schat</title>
+    <link rel="stylesheet" href="uni.css">
+</head>
+<body>
+    <div class="full-page">
+        <div class="header-with-back">
+            <div class="back-btn" id="backBtn">←</div>
+            <div class="page-title">添加对话</div>
+            <div style="width: 32px;"></div>
+        </div>
+
+        <div class="step-indicator">
+            <div class="step active" id="step1"><span class="step-num">1</span> 选择班级</div>
+            <div class="step" id="step2"><span class="step-num">2</span> 选择同学</div>
+        </div>
+
+        <div class="content-area" id="contentArea">
+            <div class="loading-state"><div class="loading-spinner"></div><div>加载班级列表...</div></div>
+        </div>
+    </div>
+    <script src="core.js"></script>
+    <script>
+        initAddChatPage();
+    </script>
+</body>
+</html>

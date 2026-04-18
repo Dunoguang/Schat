@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>注册 - Schat</title>
+    <link rel="stylesheet" href="uni.css">
+</head>
+<body>
+    <div class="full-container">
+        <div class="header-center">
+            <div class="logo-large">Schat</div>
+            <div class="subtitle">注册新账号</div>
+        </div>
+
+        <input type="text" id="username" class="input-field" placeholder="2-4个中文字符" maxlength="4" autocomplete="off">
+        <div class="hint-text" id="hintText"></div>
+
+        <div class="warning-box">
+            <div class="warning-text">
+                ⚠️ <strong>重要提示</strong><br>
+                请填写您的<b>真实中文姓名</b>（2-4个汉字），否则班牌系统将无法识别您的身份。
+            </div>
+        </div>
+
+        <div class="name-preview" id="namePreview">输入后显示预览 →</div>
+        <div class="length-indicator" id="lengthIndicator">字数：0/4</div>
+
+        <div class="button-group">
+            <button class="btn btn-secondary" id="backBtn">← 返回</button>
+            <button class="btn btn-primary" id="registerBtn">注册</button>
+        </div>
+
+        <div id="status" class="status"></div>
+    </div>
+    <script src="core.js"></script>
+    <script>
+        initJoinPage();
+    </script>
+</body>
+</html>
